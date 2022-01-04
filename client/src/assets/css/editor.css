@@ -1,0 +1,41 @@
+.grid {
+  padding: 60px;
+}
+
+.customHeading {
+  font-size: 36px;
+}
+
+.customHeading2 {
+  font-size: 28px;
+}
+.customInput {
+  margin-left: 15px;
+  height: 40px;
+  width: 70%;
+  font-size: larger;
+  border: 2px solid #003;
+}
+
+.editor {
+  margin-top: 90px;
+  border: 2px solid #003;
+}
+
+.uploadImg {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: left;
+}
+
+.submit {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: left;
+}
+
+.customBtn {
+  background-color: black;
+}

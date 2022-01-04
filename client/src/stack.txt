@@ -1,0 +1,13 @@
+
+backend
+1. node js
+2. apollo server/ rest api --> CRUD --> create, axios, fetch 
+3. mongodb
+
+API
+1.graphql
+
+frontend
+1. react
+2. apollo client
+3. material ui 
