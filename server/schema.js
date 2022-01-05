@@ -25,6 +25,21 @@ const typeDefs = gql`
     slug: String
   }
 
+  input RegisterInput {
+    username: String!
+    password: String!
+    cnfpassword: String!
+    email: String!
+  }
+
+  type User {
+    id: ID!
+    email: String!
+    token: String!
+    username: String!
+    created: String!
+  }
+
   type Query {
     posts: [Post!]!
     post(slug: String!): [Post!]
@@ -34,6 +49,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    register(registerInput: RegisterInput): User
     createPost(
       title: String!
       category: Category
