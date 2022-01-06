@@ -17,6 +17,7 @@ const server = new ApolloServer({
     Category,
     Mutation,
   },
+  context: ({ req }) => ({ req }),
 });
 
 mongoose

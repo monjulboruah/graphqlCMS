@@ -9,6 +9,17 @@ const postSchema = new Schema({
   slug: String,
   category: String,
   description: String,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+  },
+  comments: [
+    {
+      content: String,
+      username: String,
+      createdAt: String,
+    },
+  ],
 });
 
 module.exports = model("Post", postSchema);

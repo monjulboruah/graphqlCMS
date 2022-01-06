@@ -5,7 +5,7 @@ const Category = require("../models/Category");
 const Query = {
   async posts() {
     try {
-      const posts = await Post.find();
+      const posts = await Post.find().sort({ pubDate: -1 });
       return posts;
     } catch (err) {
       throw new Error(err);

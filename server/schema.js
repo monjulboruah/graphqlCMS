@@ -9,6 +9,7 @@ const typeDefs = gql`
 
   type Post {
     id: ID!
+    username: String!
     title: String!
     content: String!
     category: Category
@@ -40,6 +41,13 @@ const typeDefs = gql`
     created: String!
   }
 
+  type Comment {
+    id: ID!
+    createdAt: String!
+    username: String!
+    content: String!
+  }
+
   type Query {
     posts: [Post!]!
     post(slug: String!): [Post!]
@@ -57,11 +65,10 @@ const typeDefs = gql`
       description: String!
       content: String!
       image: String!
-      pubDate: String!
       slug: String!
       category: String!
     ): Post
-    removePost(id: ID!): Post
+    removePost(id: ID!): String!
     editPost(
       id: ID!
       title: String!
@@ -69,10 +76,11 @@ const typeDefs = gql`
       description: String!
       content: String!
       image: String!
-      pubDate: String!
       slug: String!
       category: String!
     ): Post
+    createComment(postId: String!, content: String!): Post!
+    deleteComment(postId: ID!, commentId: ID!): Post!
   }
 `;
 

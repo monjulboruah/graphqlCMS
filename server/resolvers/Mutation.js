@@ -1,12 +1,13 @@
 const { v4 } = require("uuid");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { UserInputError } = require("apollo-server");
+const { UserInputError, AuthenticationError } = require("apollo-server");
 const Post = require("../models/Post");
 const User = require("../models/User");
 const { SECRET_KEY } = require("../config");
 const { validateRegisterInput } = require("../utils/validators");
 const { validateLoginInput } = require("../utils/validators");
+const auth = require("../utils/auth");
 
 function generateToken(user) {
   return jwt.sign(
@@ -24,57 +25,92 @@ const Mutation = {
   async createPost(
     parent,
     { title, content, category, image, slug, pubDate, description },
-    _
+    context
   ) {
-    let newPost = new Post({
-      _id: v4(),
-      title,
-      content,
-      category,
-      image,
-      slug,
-      pubDate,
-      description,
-    });
+    if (content.trim() === "") {
+      throw new UserInputError("Content of the post can not be empty");
+    }
+    const user = auth(context);
 
-    const post = await newPost.save();
+    try {
+      const newPost = new Post({
+        _id: v4(),
+        username: user.username,
+        title,
+        content,
+        category,
+        image,
+        slug,
+        pubDate: new Date().toISOString(),
+        description,
+      });
 
-    return post;
+      const post = await newPost.save();
+
+      return post;
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
   async editPost(
     parent,
-    { id, title, content, category, image, slug, pubDate, description },
+    { id, title, content, category, image, slug, description },
     _
   ) {
-    let updatePost = new Post({
-      _id: id,
-      title,
-      content,
-      category,
-      image,
-      slug,
-      pubDate,
-      description,
-    });
+    const user = auth(context);
 
-    let updatedPost = await Post.findByIdAndUpdate(id, {
-      $set: updatePost,
-    });
+    try {
+      const post = await Post.findById(id);
+      if (post) {
+        if (user.id === post.user.id) {
+          const updatePost = new Post({
+            title,
+            content,
+            category,
+            image,
+            slug,
+            pubDate: new Date().toISOString(),
+            description,
+          });
 
-    return updatedPost;
+          let updatedPost = await Post.findByIdAndUpdate(id, {
+            $set: updatePost,
+          });
+
+          return updatedPost;
+        }
+        throw new Error("You are not authorised to perform this");
+      }
+      throw new Error("Post not found");
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
-  async removePost(parent, { id }, _) {
-    const post = await Post.findById(id);
-    await post.delete();
-    return post;
+  async removePost(parent, { id }, context) {
+    const user = auth(context);
+    try {
+      const post = await Post.findById(id);
+      if (post) {
+        if (user.username === post.username) {
+          await post.delete();
+          return "Post deleted successfully";
+        } else {
+          return "You are not authorised to delete the post";
+        }
+      } else {
+        return "Post not found";
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
   },
 
   async register(
     parent,
     { registerInput: { username, email, password, cnfpassword } },
-    context
+    _
   ) {
     const { valid, errors } = validateRegisterInput(
       username,
@@ -114,7 +150,7 @@ const Mutation = {
     };
   },
 
-  async login(parent, { email, password }, context) {
+  async login(parent, { email, password }, _) {
     const { errors, valid } = validateLoginInput(email, password);
 
     if (!valid) {
@@ -141,6 +177,52 @@ const Mutation = {
       id: user._id,
       token,
     };
+  },
+
+  async createComment(parent, { postId, content }, context) {
+    const { username } = auth(context);
+
+    if (content.trim() === "") {
+      throw new UserInputError("Comment is empty", {
+        errors: {
+          content: "Comment must not be empty",
+        },
+      });
+    }
+
+    const post = await Post.findById(postId);
+
+    if (post) {
+      post.comments.unshift({
+        content,
+        username,
+        createdAt: new Date().toISOString(),
+      });
+
+      await post.save();
+      return post;
+    } else {
+      throw new UserInputError("Post not found");
+    }
+  },
+
+  async deleteComment(parent, { postId, commentId }, context) {
+    const { username } = auth(context);
+
+    const post = await Post.findById(postId);
+
+    if (post) {
+      const commentIndex = post.comments.findIndex((c) => c.id === commentId);
+      if (post.comments[commentIndex].username === username) {
+        post.comments.splice(commentIndex, 1);
+        await post.save();
+        return post;
+      } else {
+        throw new AuthenticationError("User not allowed to perform this task");
+      }
+    } else {
+      throw new UserInputError("Post not fount");
+    }
   },
 };
 
