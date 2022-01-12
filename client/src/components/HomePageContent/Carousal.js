@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
-    marginTop: "120px",
+    marginTop: "30px",
     padding: "40px",
   },
 
@@ -72,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     display: "flex",
     marginTop: "60px",
+    padding: "20px",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -87,10 +88,11 @@ const useStyles = makeStyles((theme) => ({
   },
 
   buttonBox: {
+    marginLeft: "30px",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "row",
+    alignItems: "left",
   },
 }));
 
@@ -110,36 +112,34 @@ export default function Carousal({ CarousalData }) {
   return (
     <Grid container className={classes.mainGrid}>
       <Grid item xl={6} lg={6} md={12} sm={12} xs={12}>
-        <div className={classes.carousalWrap}>
-          <Box className={classes.carousal}>
-            <ArrowBackIosIcon
-              className={classes.leftArrow}
-              onClick={prevCarousal}
-            />
-            <ArrowForwardIosIcon
-              className={classes.rightArrow}
-              onClick={nextCarousal}
-            />
-            {CarousalData.map((carousal, index) => {
-              return (
-                <div
-                  className={
-                    index === current ? classes.slideActive : classes.slide
-                  }
-                  key={index}
-                >
-                  {index === current && (
-                    <img
-                      src={carousal.image}
-                      className={classes.carousalImg}
-                      alt="test image"
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </Box>
-        </div>
+        <Box className={classes.carousal}>
+          <ArrowBackIosIcon
+            className={classes.leftArrow}
+            onClick={prevCarousal}
+          />
+          <ArrowForwardIosIcon
+            className={classes.rightArrow}
+            onClick={nextCarousal}
+          />
+          {CarousalData.map((carousal, index) => {
+            return (
+              <div
+                className={
+                  index === current ? classes.slideActive : classes.slide
+                }
+                key={index}
+              >
+                {index === current && (
+                  <img
+                    src={carousal.image}
+                    className={classes.carousalImg}
+                    alt="test image"
+                  />
+                )}
+              </div>
+            );
+          })}
+        </Box>
       </Grid>
       <Grid item xl={6} lg={6} md={12} sm={12} xs={12}>
         <Box className={classes.content}>
@@ -148,27 +148,27 @@ export default function Carousal({ CarousalData }) {
             variant="display4"
             gutterBottom
             style={{
+              marginLeft: "20px",
               color: "#006",
               fontWeight: "600",
               fontSize: "30px",
               alignItems: "center",
             }}
-          >
-            More Featured in
-          </Typography>
+          ></Typography>
 
           <Typography
             component="h2"
             variant="display4"
             gutterBottom
             style={{
+              marginLeft: "20px",
               color: "#000",
               fontWeight: "600",
               fontSize: "42px",
               alignItems: "center",
             }}
           >
-            Monjul Boruah
+            Get the latest news on business, tech and science
           </Typography>
         </Box>
         <Box className={classes.buttonBox}>

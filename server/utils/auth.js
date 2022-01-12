@@ -13,7 +13,7 @@ module.exports = (context) => {
         const user = jwt.verify(token, SECRET_KEY);
         return user;
       } catch (err) {
-        throw new AuthenticationError("Invalid/Expired token");
+        throw new AuthenticationError("Session expired");
       }
     }
     throw new Error("Auth token wrong format");

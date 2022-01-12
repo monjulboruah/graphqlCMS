@@ -24,7 +24,7 @@ function generateToken(user) {
 const Mutation = {
   async createPost(
     parent,
-    { title, content, category, image, slug, pubDate, description },
+    { title, username, content, category, image, slug, description },
     context
   ) {
     if (content.trim() === "") {
@@ -35,14 +35,14 @@ const Mutation = {
     try {
       const newPost = new Post({
         _id: v4(),
-        username: user.username,
-        title,
+        title, 
+        username,
         content,
         category,
         image,
         slug,
-        pubDate: new Date().toISOString(),
         description,
+        pubDate: new Date().toISOString(),
       });
 
       const post = await newPost.save();
@@ -55,15 +55,15 @@ const Mutation = {
 
   async editPost(
     parent,
-    { id, title, content, category, image, slug, description },
-    _
+    { id, title, username, content, category, image, slug, description },
+    context
   ) {
     const user = auth(context);
 
     try {
       const post = await Post.findById(id);
       if (post) {
-        if (user.id === post.user.id) {
+        if (username === post.username) {
           const updatePost = new Post({
             title,
             content,
@@ -126,7 +126,7 @@ const Mutation = {
 
     if (user) {
       throw new UserInputError("Email already exist", {
-        error: { username: "Email already exist" },
+        errors: { username: "Email already exist" },
       });
     }
 
@@ -159,7 +159,7 @@ const Mutation = {
     const user = await User.findOne({ email });
 
     if (!user) {
-      errors.general = "User not found";
+      errors.email = "User not found";
       throw new UserInputError("User not found", { errors });
     }
 

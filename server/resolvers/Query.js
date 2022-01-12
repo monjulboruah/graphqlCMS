@@ -35,6 +35,19 @@ const Query = {
       throw new Error(err);
     }
   },
+
+  async postByUser(parent, { username }, _) {
+    try {
+      const post = await Post.find({ username: username });
+      if (post) {
+        return post;
+      } else {
+        throw new Error("Post not found");
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
   async categories() {
     try {
       const categories = await Category.find();

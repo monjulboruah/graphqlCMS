@@ -9,10 +9,7 @@ const postSchema = new Schema({
   slug: String,
   category: String,
   description: String,
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: "users",
-  },
+  username: String,
   comments: [
     {
       content: String,

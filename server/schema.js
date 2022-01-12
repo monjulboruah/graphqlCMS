@@ -51,6 +51,7 @@ const typeDefs = gql`
   type Query {
     posts: [Post!]!
     post(slug: String!): [Post!]
+    postByUser(username: String!): [Post]
     postById(id: ID!): Post
     categories: [Category!]!
     category(slug: String!): [Category!]
@@ -61,7 +62,7 @@ const typeDefs = gql`
     login(email: String!, password: String!): User!
     createPost(
       title: String!
-      category: Category
+      username: String!
       description: String!
       content: String!
       image: String!
@@ -71,8 +72,8 @@ const typeDefs = gql`
     removePost(id: ID!): String!
     editPost(
       id: ID!
+      username: String!
       title: String!
-      category: Category
       description: String!
       content: String!
       image: String!

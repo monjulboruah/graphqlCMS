@@ -1,6 +1,6 @@
 import React from "react";
-import Editor from "../components/CreatePost/Editor";
+import CreatePost from "../components/CreateEditPost/CreatePost";
 
-export default function CreatePostPage() {
-  return <Editor />;
+export default function CreatePostPage(props) {
+  return <CreatePost {...props} />;
 }

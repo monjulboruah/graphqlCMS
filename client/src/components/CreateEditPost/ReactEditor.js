@@ -19,11 +19,10 @@ class ReactEditor extends React.Component {
         convertFromHTML(this.props.initialData.content)
       )
     ),
-    id: this.props.initialData.id,
+
     content: this.props.initialData.content,
     heading: this.props.initialData.title,
     image: this.props.initialData.image,
-    pubDate: this.props.initialData.pubDate,
     category: this.props.initialData.category.id,
     description: this.props.initialData.description,
     slug: this.props.initialData.slug,
@@ -37,35 +36,6 @@ class ReactEditor extends React.Component {
       content: draftToHtml(convertToRaw(editorState.getCurrentContent())),
     });
   };
-
-  // saveFile = (e) => {
-  //   this.setState({ files: [...this.state.files, ...e.target.files] });
-  // };
-
-  // uploadFile = async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData();
-
-  //   for (const key of Object.keys(this.state.files)) {
-  //     formData.append("files", this.state.files[key]);
-  //   }
-
-  //   for (const key of Object.keys(this.state.files)) {
-  //     formData.append("fileNames", this.state.files[key].name);
-  //     console.log(this.state.files[key].name);
-  //   }
-  //   console.log(this.state.files);
-
-  //   try {
-  //     console.log("working");
-  //     this.setState({
-  //       isUploaded: true,
-  //     });
-  //     //const res = await axios.post("Your Url", formData);
-  //   } catch (ex) {
-  //     console.log(ex);
-  //   }
-  // };
 
   onHeadingChange = (e) => {
     this.setState({
@@ -91,36 +61,27 @@ class ReactEditor extends React.Component {
     });
   };
 
-  onPublishedDateChange = (e) => {
-    this.setState({
-      pubDate: e.target.value,
-    });
-  };
-
   onSlugChange = (e) => {
     this.setState({
       slug: e.target.value,
     });
-  };
 
-  submitPost = (e) => {
     if (
       this.state.heading === "" ||
       this.state.content === "" ||
       this.state.image === "" ||
-      this.state.pubDate === "" ||
       this.state.description === "" ||
       this.state.slug === "" ||
       this.state.category === ""
     ) {
-      console.log("Please fill all the field");
+      return;
+      //  console.log("Please fill all the field");
     } else {
       const post = {
-        id: this.state.id,
         title: this.state.heading,
         content: this.state.content,
         image: this.state.image,
-        pubDate: this.state.pubDate,
+        category: this.state.category,
         description: this.state.description,
         slug: this.state.slug,
         category: this.state.category,
@@ -161,28 +122,7 @@ class ReactEditor extends React.Component {
             value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
           /> */}
         </div>
-        {/* <div className="uploadImg">
-          <h3 className="customHeading2">
-            Upload post image:{" "}
-            <label htmlFor="icon-button-file">
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-              >
-                <PhotoCamera />
-              </IconButton>
-            </label>
-            <input type="file" multiple onChange={this.saveFile} />
-            <Button
-              onClick={this.uploadFile}
-              variant="contained"
-              color="secondary"
-            >
-              Upload
-            </Button>
-          </h3>
-        </div> */}
+
         <div>
           <label for="category">Select category:</label>
           <select
@@ -190,6 +130,7 @@ class ReactEditor extends React.Component {
             value={this.state.category}
             onChange={this.onCategoryChange}
           >
+            <option>Select category</option>
             <option value="1">Tech</option>
             <option value="2">Stocks</option>
             <option value="3">Current Affairs</option>
@@ -213,15 +154,7 @@ class ReactEditor extends React.Component {
             onChange={this.onDescriptionChange}
           />
         </div>
-        <div>
-          <label for="published date">Published Date:</label>
-          <input
-            type="text"
-            name="published date"
-            value={this.state.pubDate}
-            onChange={this.onPublishedDateChange}
-          />
-        </div>
+
         <div>
           <label for="slug">Write Slug:</label>
           <input
@@ -230,16 +163,6 @@ class ReactEditor extends React.Component {
             value={this.state.slug}
             onChange={this.onSlugChange}
           />
-        </div>
-        <div className="submit">
-          {" "}
-          <Button
-            onClick={this.submitPost}
-            variant="contained"
-            color="secondary"
-          >
-            Submit Post
-          </Button>
         </div>
       </div>
     );

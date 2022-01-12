@@ -4,7 +4,6 @@ import Grid from "@material-ui/core/Grid";
 import Carousal from "./Carousal";
 import { CarousalData } from "./CarousalData";
 import BlogPost from "./BlogPost";
-import { BlogPostData } from "./BlogPostData";
 import Stocks from "./Stocks";
 import Comments from "./Comments";
 import AboutUs from "./AboutUs";
@@ -53,7 +52,7 @@ export default function HomePageContent() {
         </Grid>
 
         <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-          <BlogPost BlogPostData={BlogPostData} />
+          <BlogPost />
         </Grid>
 
         <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
@@ -61,7 +60,7 @@ export default function HomePageContent() {
         </Grid>
 
         <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-          <BlogPost BlogPostData={BlogPostData} />
+          <BlogPost />
         </Grid>
 
         <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>

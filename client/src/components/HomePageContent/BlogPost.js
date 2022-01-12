@@ -43,7 +43,7 @@ export default function BlogPost({ BlogPostData }) {
 
   if (error) return <div>Some error happen</div>;
 
-  console.log(data.posts[0].title);
+  //console.log(data.posts[0].title);
   return (
     <>
       <Grid container className={classes.mainGrid} spacing={3}>
