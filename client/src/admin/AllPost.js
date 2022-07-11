@@ -46,6 +46,7 @@ const useStyles = makeStyles({
 
   deleteIcon: {
     color: "red",
+    cursor: "pointer",
   },
 });
 
@@ -147,7 +148,7 @@ export default function AllPost(props) {
                 <TableRow>
                   <TableCell>Title</TableCell>
                   <TableCell align="right">Published Date</TableCell>
-                  <TableCell align="right">Slug</TableCell>
+                  <TableCell align="right">Tags</TableCell>
                   <TableCell align="right">Category</TableCell>
                   <TableCell align="right">Actions</TableCell>
                 </TableRow>

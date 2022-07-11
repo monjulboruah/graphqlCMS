@@ -6,6 +6,7 @@ import SideNavToggle from "../../admin/SideNavToggle";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import ReactEditor from "./ReactEditor";
 import { makeStyles } from "@material-ui/core/styles";
 import SideNav from "../../admin/SideNav";
@@ -13,6 +14,9 @@ import SideNav from "../../admin/SideNav";
 const useStyles = makeStyles((themes) => ({
   grid: {
     marginTop: "60px",
+  },
+  btn: {
+    marginLeft: "20px",
   },
 }));
 
@@ -47,13 +51,22 @@ export default function CreatePost(props) {
   const [post, setPost] = useState({
     post: null,
   });
+  const [open, setOpen] = React.useState(false);
 
   const [createPost, { loading }] = useMutation(CREATE_POST, {
     onCompleted(data) {
       // console.log(data);
       props.history.push("/");
     },
-
+    variables: {
+      title: post.title,
+      username: user.username,
+      content: post.content,
+      category: post.category,
+      image: post.image,
+      slug: post.slug,
+      description: post.description,
+    },
     onError: (err) => {
       // console.log(err);
       setErrors(err);
@@ -70,6 +83,10 @@ export default function CreatePost(props) {
     pubDate: "",
     slug: "",
   };
+
+  function onSubmitData() {
+    createPost();
+  }
 
   //console.log(user.username);
   const createPostPage = user ? (
@@ -110,24 +127,16 @@ export default function CreatePost(props) {
           <ReactEditor
             onChangeData={(post) => setPost(post)}
             initialData={postData}
+            onSubmitData={() => onSubmitData()}
           />
-          <button
-            onClick={() =>
-              createPost({
-                variables: {
-                  title: post.title,
-                  username: user.username,
-                  content: post.content,
-                  category: post.category,
-                  image: post.image,
-                  slug: post.slug,
-                  description: post.description,
-                },
-              })
-            }
+          {/* <Button
+            className={classes.btn}
+            variant="contained"
+            color="primary"
+            onClick={() => onSubmit()}
           >
-            Create Post
-          </button>
+            Publish
+          </Button> */}
         </Grid>
       </Grid>
     </Container>

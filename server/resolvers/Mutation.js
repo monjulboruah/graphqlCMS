@@ -35,7 +35,7 @@ const Mutation = {
     try {
       const newPost = new Post({
         _id: v4(),
-        title, 
+        title,
         username,
         content,
         category,

@@ -7,14 +7,16 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import ReactEditor from "./ReactEditor";
 import { makeStyles } from "@material-ui/core/styles";
-
+import Button from "@material-ui/core/Button";
 import SideNavToggle from "../../admin/SideNavToggle";
-
 import SideNav from "../../admin/SideNav";
 
 const useStyles = makeStyles((themes) => ({
   grid: {
     marginTop: "30px",
+  },
+  btn: {
+    marginLeft: "20px",
   },
 }));
 
@@ -77,11 +79,22 @@ export default function EditPost(props) {
       id: id,
     },
   });
-
+  const username = data.postById.username;
   const [editPost] = useMutation(EDIT_POST, {
-    onCompleted(data) {
+    onCompleted(dta) {
       //    console.log(data);
-      props.history.push("/");
+      props.history.push("/admin");
+    },
+
+    variables: {
+      id: id,
+      title: post.title,
+      username: username,
+      category: post.category,
+      description: post.description,
+      content: post.content,
+      image: post.image,
+      slug: post.slug,
     },
 
     onError: (err) => {
@@ -111,6 +124,10 @@ export default function EditPost(props) {
     image: data.postById.image,
     slug: data.postById.slug,
   };
+
+  function onSubmitData() {
+    editPost();
+  }
 
   const editPostPage = user ? (
     <Container>
@@ -145,25 +162,8 @@ export default function EditPost(props) {
           <ReactEditor
             onChangeData={(post) => setPost(post)}
             initialData={postData}
+            onSubmitData={() => onSubmitData()}
           />
-          <button
-            onClick={() =>
-              editPost({
-                variables: {
-                  id: id,
-                  title: post.title,
-                  username: data.postById.username,
-                  category: post.category,
-                  description: post.description,
-                  content: post.content,
-                  image: post.image,
-                  slug: post.slug,
-                },
-              })
-            }
-          >
-            Update Post
-          </button>
         </Grid>
       </Grid>
     </Container>

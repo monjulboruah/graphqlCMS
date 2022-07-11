@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../context";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { Box, Typography } from "@material-ui/core";
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SideNav() {
   const classes = useStyles();
 
+  const { user, logout } = useContext(AuthContext);
   const [checked, setChecked] = React.useState(true);
 
   const handleChangeCheckBox = (event) => {
@@ -143,7 +145,7 @@ export default function SideNav() {
           </Link>
         </p>
         <p>
-          <Link to="/" className={classes.link}>
+          <Link to="/" className={classes.link} onClick={logout}>
             <PowerSettingsNewIcon className={classes.muIcon} />
             {"  "}
             Log out

@@ -26,6 +26,7 @@ class ReactEditor extends React.Component {
     category: this.props.initialData.category.id,
     description: this.props.initialData.description,
     slug: this.props.initialData.slug,
+    open: false,
     // files: [],
     // isUploaded: false,
   };
@@ -65,17 +66,26 @@ class ReactEditor extends React.Component {
     this.setState({
       slug: e.target.value,
     });
+  };
 
+  handleClose = (e) => {
+    this.setState({
+      open: true,
+    });
+  };
+
+  onSubmit = (e) => {
     if (
       this.state.heading === "" ||
       this.state.content === "" ||
       this.state.image === "" ||
       this.state.description === "" ||
       this.state.slug === "" ||
-      this.state.category === ""
+      this.state.category === 0
     ) {
+      alert("Please fill all the fields");
       return;
-      //  console.log("Please fill all the field");
+      //
     } else {
       const post = {
         title: this.state.heading,
@@ -89,6 +99,7 @@ class ReactEditor extends React.Component {
       console.log("Submitted");
       this.props.onChangeData(post);
     }
+    this.props.onSubmitData();
   };
 
   render() {
@@ -123,31 +134,38 @@ class ReactEditor extends React.Component {
           /> */}
         </div>
 
-        <div>
+        <div className="customInput2">
           <label for="category">Select category:</label>
           <select
             name="category"
+            className="customSelect"
             value={this.state.category}
             onChange={this.onCategoryChange}
           >
-            <option>Select category</option>
+            <option>Select</option>
             <option value="1">Tech</option>
             <option value="2">Stocks</option>
             <option value="3">Current Affairs</option>
           </select>
         </div>
-        <div>
+        <div className="customInput2">
           <label for="image-url">Enter image url:</label>
+        </div>
+        <div>
           <input
+            className="customInput3"
             type="text"
             name="url"
             value={this.state.image}
             onChange={this.onImageChange}
           />
         </div>
-        <div>
+        <div className="customInput2">
           <label for="description">Write a short description:</label>
+        </div>
+        <div>
           <input
+            className="customInput3"
             type="text"
             name="description"
             value={this.state.description}
@@ -155,15 +173,21 @@ class ReactEditor extends React.Component {
           />
         </div>
 
+        <div className="customInput2">
+          <label for="slug">Write Tags:</label>
+        </div>
         <div>
-          <label for="slug">Write Slug:</label>
           <input
+            className="customInput3"
             type="text"
             name="slug"
             value={this.state.slug}
             onChange={this.onSlugChange}
           />
         </div>
+        <Button variant="contained" color="primary" onClick={this.onSubmit}>
+          Publish
+        </Button>
       </div>
     );
   }

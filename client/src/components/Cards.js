@@ -11,7 +11,6 @@ const useStyles = makeStyles({
   root: {
     width: "380px",
     height: "400px",
-    border: "1px solid #003",
   },
   media: {
     height: "250px",
@@ -23,7 +22,6 @@ const useStyles = makeStyles({
   grow: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-around",
   },
 });
 
